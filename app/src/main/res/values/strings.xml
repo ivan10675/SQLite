@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">spisok</string>
+    <string name="textViewNameRed">Имя</string>
+    <string name="textViewFirstNameRed">Фамилия</string>
+    <string name="textViewDateRed">Дата рождения</string>
+    <string name="textViewTelephoneRed">Номер телефона</string>
+    <string name="Name">Имя:</string>
+    <string name="FirstName">Фамилия:</string>
+    <string name="Date">Дата рождения:</string>
+    <string name="Telephone">Телефон:</string>
+    <string name="buttonBack">Назад</string>
+    <string name="buttonRedaction">Редактировать</string>
+    <string name="buttonDelete">Удалить</string>
+    <string name="button">Создать контакта</string>
 </resources>

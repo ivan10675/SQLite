@@ -6,7 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-data class Todo(val id: Long, val title: String)
+data class Todo(val id: Long, val name: String, val firstname: String,val date:String,val tele: String )
 
 class DBHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -16,7 +16,10 @@ class DBHelper(context: Context?) :
         const val DATABASE_NAME = "tododb"
         const val TABLE_NAME = "todos"
         const val KEY_ID = "id"
-        const val KEY_TITLE = "title"
+        const val KEY_NAME = "name"
+        const val KEY_FIRSTNAME = "firstname"
+        const val KEY_DATE = "date"
+        const val KEY_TELE = "tele"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -24,7 +27,10 @@ class DBHelper(context: Context?) :
             """
             CREATE TABLE $TABLE_NAME (
                 $KEY_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                $KEY_TITLE TEXT NOT NULL
+                $KEY_NAME TEXT NOT NULL,
+                $KEY_FIRSTNAME TEXT NOT NULL,
+                $KEY_DATE TEXT NOT NULL,
+                $KEY_TELE TEXT NOT NULL
             )"""
         )
     }
@@ -43,11 +49,17 @@ class DBHelper(context: Context?) :
         )
         if (cursor.moveToFirst()) {
             val idIndex: Int = cursor.getColumnIndex(KEY_ID)
-            val titleIndex: Int = cursor.getColumnIndex(KEY_TITLE)
+            val nameIndex: Int = cursor.getColumnIndex(KEY_NAME)
+            val firstnameIndex: Int = cursor.getColumnIndex(KEY_FIRSTNAME)
+            val dateIndex: Int = cursor.getColumnIndex(KEY_DATE)
+            val teleIndex: Int = cursor.getColumnIndex(KEY_TELE)
             do {
                 val todo = Todo(
                     cursor.getLong(idIndex),
-                    cursor.getString(titleIndex),
+                    cursor.getString(nameIndex),
+                    cursor.getString(firstnameIndex),
+                    cursor.getString(dateIndex),
+                    cursor.getString(teleIndex),
                 )
                 result.add(todo)
             } while (cursor.moveToNext())
@@ -59,7 +71,7 @@ class DBHelper(context: Context?) :
     fun add(title: String): Long {
         val database = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(KEY_TITLE, title)
+        contentValues.put(KEY_NAME, title)
         val id = database.insert(TABLE_NAME, null, contentValues)
         close()
         return id
@@ -68,7 +80,7 @@ class DBHelper(context: Context?) :
     fun update(id: Long, title: String) {
         val database = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(KEY_TITLE, title)
+        contentValues.put(KEY_NAME, title)
         database.update(TABLE_NAME, contentValues, "$KEY_ID = ?", arrayOf(id.toString()))
         close()
     }

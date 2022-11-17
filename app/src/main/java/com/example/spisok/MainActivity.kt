@@ -9,17 +9,19 @@ import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spisok.DBHelper.Companion.KEY_ID
-import com.example.spisok.DBHelper.Companion.KEY_TITLE
+import com.example.spisok.DBHelper.Companion.KEY_NAME
 
 class MainActivity : AppCompatActivity() {
     var number = ""
+
     //val filtrlist = mutableListOf<String>()
-    var filter = R.id.radioButton
     val list = mutableListOf<Todo>()
     private val dbHelper = DBHelper(this)
+
     companion object {
         const val EXTRA_KEY = "EXTRA"
     }
+
     private lateinit var adapter: RecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -31,13 +33,13 @@ class MainActivity : AppCompatActivity() {
         var num = ""
         list.addAll(dbHelper.getAll())
         adapter = RecyclerAdapter(list) {
-            // адаптеру передали обработчик удаления элемента
-            adapter.notifyItemRemoved(it)
-            val intent = Intent(this, MainActivity2::class.java)
-            intent.putExtra(KEY_TITLE,list.get(it).title)
-            intent.putExtra(KEY_ID,it)
-            intent.putExtra(EXTRA_KEY, list[it].title)
+
+
+            val intent = Intent(this, ViewActivity::class.java)
+            intent.putExtra(KEY_NAME, list[it].name)
+            intent.putExtra(KEY_ID, it)
             startActivity(intent)
+
 
         }
 
@@ -66,16 +68,17 @@ class MainActivity : AppCompatActivity() {
         buttonAdd.setOnClickListener {
             val s = number.text.toString()
             val id = dbHelper.add(num)
-            list.add(Todo(id,s))
+            //list.add(Todo(id, s))
             adapter.notifyItemInserted(list.lastIndex)
-           // filtration()
+            number.text.clear()
+            // filtration()
         }
-       // radioGroup.setOnCheckedChangeListener { radioGroup, i ->
+        // radioGroup.setOnCheckedChangeListener { radioGroup, i ->
         //    filter = i
-           // filtration()
-            adapter.notifyDataSetChanged()
-        }
+        // filtration()
+        adapter.notifyDataSetChanged()
     }
+}
 
 //    fun filtration() {
 //        filtrlist.clear()
@@ -86,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 //        } else if (filter == R.id.radioButtonMinus) {
 //            filtrlist.addAll(list.filter { it < 0 })
 //        }
- //   }
+//   }
 
 
 //}
