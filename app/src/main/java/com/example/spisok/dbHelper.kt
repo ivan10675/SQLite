@@ -59,7 +59,7 @@ class DBHelper(context: Context?) :
                     cursor.getString(nameIndex),
                     cursor.getString(firstnameIndex),
                     cursor.getString(dateIndex),
-                    cursor.getString(teleIndex),
+                    cursor.getString(teleIndex)
                 )
                 result.add(todo)
             } while (cursor.moveToNext())
@@ -68,19 +68,25 @@ class DBHelper(context: Context?) :
         return result
     }
 
-    fun add(title: String): Long {
+    fun add(name: String,firstname: String,date: String,tele:String): Long {
         val database = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(KEY_NAME, title)
+        contentValues.put(KEY_NAME, name)
+        contentValues.put(KEY_FIRSTNAME, firstname)
+        contentValues.put(KEY_DATE, date)
+        contentValues.put(KEY_TELE, tele)
         val id = database.insert(TABLE_NAME, null, contentValues)
         close()
         return id
     }
 
-    fun update(id: Long, title: String) {
+    fun update(id: Long,name: String,firstname: String,date: String,tele:String) {
         val database = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(KEY_NAME, title)
+        contentValues.put(KEY_NAME, name)
+        contentValues.put(KEY_FIRSTNAME, firstname)
+        contentValues.put(KEY_DATE, date)
+        contentValues.put(KEY_TELE, tele)
         database.update(TABLE_NAME, contentValues, "$KEY_ID = ?", arrayOf(id.toString()))
         close()
     }
@@ -95,5 +101,29 @@ class DBHelper(context: Context?) :
         val database = this.writableDatabase
         database.delete(TABLE_NAME, null, null)
         close()
+    }
+    fun getById(id: Long): Todo? {
+        var result: Todo? = null
+        val database = this.writableDatabase
+        val cursor: Cursor = database.query(
+            TABLE_NAME, null, "$KEY_ID = ?", arrayOf(id.toString()),
+            null, null, null
+        )
+        if (cursor.moveToFirst()) {
+            val idIndex: Int = cursor.getColumnIndex(KEY_ID)
+            val nameIndex: Int = cursor.getColumnIndex(KEY_NAME)
+            val firstnameIndex: Int = cursor.getColumnIndex(KEY_FIRSTNAME)
+            val dateIndex: Int = cursor.getColumnIndex(KEY_DATE)
+            val teleIndex: Int = cursor.getColumnIndex(KEY_TELE)
+            result = Todo(
+                cursor.getLong(idIndex),
+                cursor.getString(nameIndex),
+                cursor.getString(firstnameIndex),
+                cursor.getString(dateIndex),
+                cursor.getString(teleIndex),
+            )
+        }
+        cursor.close()
+        return result
     }
 }
