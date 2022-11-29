@@ -34,7 +34,7 @@ class ViewActivity : AppCompatActivity() {
         }
         buttonDelete.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java)
-
+            dbHelper.getById(s)?.id?.let { it1 -> dbHelper.remove(it1) }
             startActivity(intent)
         }
     }
