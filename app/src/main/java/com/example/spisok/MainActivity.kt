@@ -17,7 +17,7 @@ import com.example.spisok.DBHelper.Companion.KEY_TELE
 class MainActivity : AppCompatActivity() {
     var number = ""
     //val filtrlist = mutableListOf<String>()
-    val list = mutableListOf<Todo>()
+    private val list = mutableListOf<Todo>()
     private val dbHelper = DBHelper(this)
 
     companion object {
@@ -72,10 +72,9 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         val buttonAdd = findViewById<Button>(R.id.button)
         buttonAdd.setOnClickListener {
-            val s = number.text.toString()
+            //val s = number.text.toString()
             val id = dbHelper.add(num,"0","0","0")
-            //list.add(Todo(id, s))
-            adapter.notifyItemInserted(list.lastIndex)
+            //adapter.notifyItemInserted(list.lastIndex)
             number.text.clear()
             // filtration()
         }
