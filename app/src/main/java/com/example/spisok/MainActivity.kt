@@ -1,5 +1,6 @@
 package com.example.spisok
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,7 @@ import com.example.spisok.DBHelper.Companion.KEY_FIRSTNAME
 import com.example.spisok.DBHelper.Companion.KEY_ID
 import com.example.spisok.DBHelper.Companion.KEY_NAME
 import com.example.spisok.DBHelper.Companion.KEY_TELE
+import com.example.spisok.ViewActivity.Companion.REQUEST_CODE
 
 class MainActivity : AppCompatActivity() {
     var number = ""
@@ -23,7 +25,18 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_KEY = "EXTRA"
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            // получение данных от Activity2
+            val id = data?.getLongExtra(ViewActivity.RESULT_KEY ,0)
+            val index = list.indexOfFirst { it.id == id }
+            list.removeAt(index)
+            adapter.notifyItemRemoved(index)
+            // в result лежит строка "тут какой-то результат (строка)"
+        }
+    }
     private lateinit var adapter: RecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -44,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra(KEY_TELE, list[it].tele)
             intent.putExtra(KEY_ID, it)
             intent.putExtra(EXTRA_KEY, list[it].id)
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_CODE)
 
 
         }
@@ -72,9 +85,12 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         val buttonAdd = findViewById<Button>(R.id.button)
         buttonAdd.setOnClickListener {
-            //val s = number.text.toString()
+            val s = number.text.toString()
             val id = dbHelper.add(num,"0","0","0")
-            //adapter.notifyItemInserted(list.lastIndex)
+            list.add(
+                Todo(id,num,"0","0","0")
+            )
+            adapter.notifyItemInserted(list.lastIndex)
             number.text.clear()
             // filtration()
         }

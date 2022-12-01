@@ -16,7 +16,7 @@ class CreateActivity : AppCompatActivity() {
         val textViewFirstNameRed = findViewById<TextView>(R.id.textViewFirstNameRed)
         val textViewDateRed = findViewById<TextView>(R.id.textViewDateRed)
         val textViewTelephoneRed = findViewById<TextView>(R.id.textViewTelephoneRed)
-        val buttonСancel =  findViewById<Button>(R.id.buttonСancel)
+        val buttonCancel =  findViewById<Button>(R.id.buttonСancel)
         val buttonSave =  findViewById<Button>(R.id.buttonSave)
 
         textViewNameRed.text = dbHelper.getById(s)?.name
@@ -24,7 +24,7 @@ class CreateActivity : AppCompatActivity() {
         textViewDateRed.text=dbHelper.getById(s)?.date
         textViewTelephoneRed.text=dbHelper.getById(s)?.tele
 
-        buttonСancel.setOnClickListener{
+        buttonCancel.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
