@@ -27,9 +27,6 @@
     <LinearLayout
         android:layout_width="411dp"
         android:layout_height="500dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
         android:layout_marginBottom="363dp"
         android:orientation="vertical"
         android:padding="5dp"
@@ -41,7 +38,6 @@
         android:paddingBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonСancel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -51,27 +47,24 @@
             android:layout_width="368dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="@string/textViewNameRed" />
+            android:inputType="text"
+            android:minHeight="48dp" />
 
         <EditText
             android:id="@+id/textViewFirstNameRed"
             android:layout_width="368dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="@string/textViewFirstNameRed" />
+            android:inputType="text"
+            android:minHeight="48dp" />
 
         <EditText
             android:id="@+id/textViewDateRed"
             android:layout_width="369dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="date"
             android:minHeight="48dp"
-            android:text="@string/textViewDateRed"
             tools:ignore="DuplicateIds,TextFields" />
 
         <EditText
@@ -79,8 +72,7 @@
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="@string/textViewTelephoneRed" />
+            android:inputType="phone"
+            android:minHeight="48dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

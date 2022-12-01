@@ -36,6 +36,28 @@ class MainActivity : AppCompatActivity() {
             adapter.notifyItemRemoved(index)
             // в result лежит строка "тут какой-то результат (строка)"
         }
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_CANCELED) {
+            // получение данных от Activity2
+            val id = data?.getLongExtra(ViewActivity.RESULT_KEY ,0)
+            val index = list.indexOfFirst { it.id == id }
+            val item = id?.let { dbHelper.getById(it) }
+            if (item != null) {
+                list[index]=item
+            }
+            adapter.notifyDataSetChanged()
+            // в result лежит строка "тут какой-то результат (строка)"
+        }
+        if (requestCode == CreateActivity.REQUEST_CODE2 && resultCode ==  Activity.RESULT_CANCELED) {
+            // получение данных от Activity2
+            val id = data?.getLongExtra(CreateActivity.RESULT_KEY2 ,0)
+            val index = list.indexOfFirst { it.id == id }
+            val item = id?.let { dbHelper.getById(it) }
+            if (item != null) {
+                list[index]=item
+            }
+            adapter.notifyDataSetChanged()
+            // в result лежит строка "тут какой-то результат (строка)"
+        }
     }
     private lateinit var adapter: RecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,17 +107,16 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         val buttonAdd = findViewById<Button>(R.id.button)
         buttonAdd.setOnClickListener {
-            val s = number.text.toString()
-            val id = dbHelper.add(num,"0","0","0")
+            val id = dbHelper.add("","","","")
             list.add(
-                Todo(id,num,"0","0","0")
+                Todo(id,"","","","")
             )
+            val intent = Intent(this, CreateActivity::class.java)
+            intent.putExtra(ViewActivity.EXTRA_KEY2, id)
+            startActivityForResult(intent, CreateActivity.REQUEST_CODE2)
             adapter.notifyItemInserted(list.lastIndex)
             number.text.clear()
-            // filtration()
         }
-        // radioGroup.setOnCheckedChangeListener { radioGroup, i ->
-        //    filter = i
         // filtration()
         adapter.notifyDataSetChanged()
     }
