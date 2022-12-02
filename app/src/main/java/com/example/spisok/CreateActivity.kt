@@ -39,7 +39,7 @@ class CreateActivity : AppCompatActivity() {
             item?.id?.let { it1 -> dbHelper.update(it1,textViewNameRed.text.toString(),textViewFirstNameRed.text.toString(),textViewDateRed.text.toString(),textViewTelephoneRed.text.toString()) }
             val returnIntent = Intent()
             returnIntent.putExtra(RESULT_KEY2, id)
-            if(item?.name=="") setResult(Activity.RESULT_CANCELED, returnIntent)
+            if(item?.name!="") setResult(Activity.RESULT_CANCELED, returnIntent)
             else setResult(Activity.RESULT_OK, returnIntent)
             finish()
         }
