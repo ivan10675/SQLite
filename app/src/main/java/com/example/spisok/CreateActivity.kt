@@ -17,7 +17,7 @@ class CreateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main3)
-        val id = intent.getLongExtra(ViewActivity.EXTRA_KEY2,0)
+        var id = intent.getLongExtra(ViewActivity.EXTRA_KEY2,0)
         val textViewNameRed = findViewById<EditText>(R.id.textViewNameRed)
         val textViewFirstNameRed = findViewById<EditText>(R.id.textViewFirstNameRed)
         val textViewDateRed = findViewById<EditText>(R.id.textViewDateRed)
@@ -36,6 +36,7 @@ class CreateActivity : AppCompatActivity() {
             finish()
         }
         buttonSave.setOnClickListener{
+            val returnIntent = Intent()
             if(id!=0L){
              dbHelper.update(
                  id,
@@ -50,11 +51,11 @@ class CreateActivity : AppCompatActivity() {
                     textViewFirstNameRed.text.toString(),
                     textViewDateRed.text.toString(),
                     textViewTelephoneRed.text.toString())
-            }
-            val returnIntent = Intent()
-            returnIntent.putExtra(RESULT_KEY2, id)
-            setResult(Activity.RESULT_OK, returnIntent)
 
+            }
+
+            setResult(Activity.RESULT_OK, returnIntent)
+            returnIntent.putExtra(RESULT_KEY2, id)
             finish()
             }
 

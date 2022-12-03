@@ -1,6 +1,5 @@
 package com.example.spisok
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -10,18 +9,10 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.spisok.CreateActivity.Companion.REQUEST_CODE2
-import com.example.spisok.DBHelper.Companion.KEY_DATE
-import com.example.spisok.DBHelper.Companion.KEY_FIRSTNAME
-import com.example.spisok.DBHelper.Companion.KEY_ID
-import com.example.spisok.DBHelper.Companion.KEY_NAME
-import com.example.spisok.DBHelper.Companion.KEY_TELE
 import com.example.spisok.ViewActivity.Companion.REQUEST_CODE
 
 class MainActivity : AppCompatActivity() {
-    var number = ""
     private val list = mutableListOf<Todo>()
-    val filtration_list = mutableListOf<Todo>()
     private val dbHelper = DBHelper(this)
 
     companion object {
@@ -30,37 +21,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            // получение данных от Activity2
-            val id = data?.getLongExtra(ViewActivity.RESULT_KEY, 0)
-            val index = list.indexOfFirst { it.id == id }
-            list.removeAt(index)
-            adapter.notifyItemRemoved(index)
-            // в result лежит строка "тут какой-то результат (строка)"
-        }
-        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_CANCELED) {
-            // получение данных от Activity2
-            val id = data?.getLongExtra(ViewActivity.RESULT_KEY, 0)
-            val index = list.indexOfFirst { it.id == id }
-            val item = id?.let { dbHelper.getById(it) }
-            if (item != null) {
-                list[index] = item
-            }
-            adapter.notifyDataSetChanged()
-            // в result лежит строка "тут какой-то результат (строка)"
-        }
-        if (requestCode == REQUEST_CODE2 && resultCode == Activity.RESULT_OK) {
-            // получение данных от Activity2
-            val id = data?.getLongExtra(CreateActivity.RESULT_KEY2, 0)
-            val index = list.indexOfFirst { it.id == id }
-            val item = id?.let { dbHelper.getById(it) }
-            if (item != null) {
-                list[index] = item
-            }
-            adapter.notifyDataSetChanged()
-            // в result лежит строка "тут какой-то результат (строка)"
-        }
+        list.clear()
+        list.addAll(dbHelper.getAll())
+        adapter.updateList(list)
     }
 
     private lateinit var adapter: RecyclerAdapter
@@ -115,7 +78,6 @@ class MainActivity : AppCompatActivity() {
         buttonAdd.setOnClickListener {
             val intent = Intent(this, CreateActivity::class.java)
             startActivityForResult(intent, CreateActivity.REQUEST_CODE2)
-            //adapter.notifyItemInserted(list.lastIndex)
         }
         adapter.notifyDataSetChanged()
 
@@ -126,7 +88,8 @@ class MainActivity : AppCompatActivity() {
             adapter.updateList(list)
         } else {
             val filtration_list = list.filter {
-                it.name.contains(number, true)
+                it.name.contains(number, true) ||
+                        it.firstname.contains(number, true)
             }
             adapter.updateList(filtration_list)
         }

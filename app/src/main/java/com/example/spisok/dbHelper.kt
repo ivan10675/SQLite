@@ -45,7 +45,7 @@ class DBHelper(context: Context?) :
         val database = this.writableDatabase
         val cursor: Cursor = database.query(
             TABLE_NAME, null, null, null,
-            null, null, null
+            null, null, KEY_NAME
         )
         if (cursor.moveToFirst()) {
             val idIndex: Int = cursor.getColumnIndex(KEY_ID)
