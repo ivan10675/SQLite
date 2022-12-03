@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class RecyclerAdapter(
-    private val list: MutableList<Todo>,
+    private var list: List<Todo>,
     // передаём коллбек нажатия на кнопку
-    private val onItemClick: (id: Int) -> Unit
+    private val onItemClick: (id: Long) -> Unit
 ) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -19,11 +19,16 @@ class RecyclerAdapter(
         return ViewHolder(itemView)
     }
 
+    fun updateList(newList: List<Todo>) {
+        list = newList
+        this.notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.textView.text = list[position].name
         // обработчик нажатия кнопки
         holder.button.setOnClickListener {
-            onItemClick(holder.adapterPosition)
+            onItemClick(list[holder.adapterPosition].id)
         }
     }
 

@@ -11,7 +11,7 @@ import android.widget.TextView
 class CreateActivity : AppCompatActivity() {
     private val dbHelper = DBHelper(this)
     companion object {
-        val REQUEST_CODE2 = 1
+        val REQUEST_CODE2 = 2
         const val RESULT_KEY2 = "result"
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,12 +36,28 @@ class CreateActivity : AppCompatActivity() {
             finish()
         }
         buttonSave.setOnClickListener{
-            item?.id?.let { it1 -> dbHelper.update(it1,textViewNameRed.text.toString(),textViewFirstNameRed.text.toString(),textViewDateRed.text.toString(),textViewTelephoneRed.text.toString()) }
+            if(id!=0L){
+             dbHelper.update(
+                 id,
+                 textViewNameRed.text.toString(),
+                 textViewFirstNameRed.text.toString(),
+                 textViewDateRed.text.toString(),
+                 textViewTelephoneRed.text.toString())
+            }
+            else{
+                dbHelper.add(
+                    textViewNameRed.text.toString(),
+                    textViewFirstNameRed.text.toString(),
+                    textViewDateRed.text.toString(),
+                    textViewTelephoneRed.text.toString())
+            }
             val returnIntent = Intent()
             returnIntent.putExtra(RESULT_KEY2, id)
-            if(item?.name!="") setResult(Activity.RESULT_CANCELED, returnIntent)
-            else setResult(Activity.RESULT_OK, returnIntent)
+            setResult(Activity.RESULT_OK, returnIntent)
+
             finish()
+            }
+
         }
     }
-    }
+
